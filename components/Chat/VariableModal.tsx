@@ -14,9 +14,7 @@ export const VariableModal: FC<Props> = ({
   onSubmit,
   onClose,
 }) => {
-  const [updatedVariables, setUpdatedVariables] = useState<
-    { key: string; value: string }[]
-  >(
+  const [updatedVariables, setUpdatedVariables] = useState<{ key: string; value: string }[]>(
     variables
       .map((variable) => ({ key: variable, value: '' }))
       .filter(

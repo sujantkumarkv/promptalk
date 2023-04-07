@@ -61,8 +61,7 @@ const Home: React.FC<HomeProps> = ({
   const [folders, setFolders] = useState<Folder[]>([]);
 
   const [conversations, setConversations] = useState<Conversation[]>([]);
-  const [selectedConversation, setSelectedConversation] =
-    useState<Conversation>();
+  const [selectedConversation, setSelectedConversation] = useState<Conversation>();
   const [currentMessage, setCurrentMessage] = useState<Message>();
 
   const [showSidebar, setShowSidebar] = useState<boolean>(true);
@@ -232,7 +231,7 @@ const Home: React.FC<HomeProps> = ({
       code: null,
       messageLines: [
         t(
-          'Make sure your OpenAI API key is set in the bottom left of the sidebar.',
+          'Make sure your OpenAI API key is set.',
         ),
         t('If you completed this step, OpenAI may be experiencing issues.'),
       ],
@@ -626,7 +625,7 @@ const Home: React.FC<HomeProps> = ({
   return (
     <>
       <Head>
-        <title>Chatbot UI</title>
+        <title>Promptbook</title>
         <meta name="description" content="ChatGPT but better." />
         <meta
           name="viewport"
@@ -694,6 +693,7 @@ const Home: React.FC<HomeProps> = ({
                 conversation={selectedConversation}
                 messageIsStreaming={messageIsStreaming}
                 apiKey={apiKey}
+                onUpdateApiKey={handleApiKeyChange}
                 serverSideApiKeyIsSet={serverSideApiKeyIsSet}
                 defaultModelId={defaultModelId}
                 modelError={modelError}

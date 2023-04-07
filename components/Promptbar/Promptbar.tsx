@@ -105,14 +105,25 @@ export const Promptbar: FC<Props> = ({
           }}
         >
           <IconPlus size={16} />
-          {t('New prompt')}
+          {t('Add prompt')}
         </button>
 
         <button
-          className="flex items-center flex-shrink-0 gap-3 p-3 ml-2 text-sm text-white transition-colors duration-200 border rounded-md cursor-pointer border-white/20 hover:bg-gray-500/10"
+          className="flex items-center flex-shrink-0 gap-3 p-3 ml-2 text-sm text-white transition-colors
+                     duration-200 border rounded-md cursor-pointer border-white/20 hover:bg-gray-500/10"
           onClick={() => onCreateFolder(t('New folder'))}
         >
           <IconFolderPlus size={16} />
+        </button>
+      </div>
+
+      <div className="flex items-center">
+        <button 
+          className="text-sidebar flex w-full flex-shrink-0 cursor-pointer justify-center select-none items-center gap-3 rounded-md 
+                    border border-white/20 p-3 text-white transition-colors duration-200 hover:bg-gray-500/10"
+          onClick={() => {}}         
+        >
+          Prompt library
         </button>
       </div>
 

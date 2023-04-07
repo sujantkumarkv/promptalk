@@ -22,11 +22,13 @@ import { ChatMessage } from './ChatMessage';
 import { ErrorMessageDiv } from './ErrorMessageDiv';
 import { ModelSelect } from './ModelSelect';
 import { SystemPrompt } from './SystemPrompt';
+import { ApiKeyModal } from '../ApiKey/ApiKeyModal';
 
 interface Props {
   conversation: Conversation;
   models: OpenAIModel[];
   apiKey: string;
+  onUpdateApiKey: (apiKey: string) => void;
   serverSideApiKeyIsSet: boolean;
   defaultModelId: OpenAIModelID;
   messageIsStreaming: boolean;
@@ -47,6 +49,7 @@ export const Chat: FC<Props> = memo(
     conversation,
     models,
     apiKey,
+    onUpdateApiKey,
     serverSideApiKeyIsSet,
     defaultModelId,
     messageIsStreaming,
@@ -62,8 +65,8 @@ export const Chat: FC<Props> = memo(
     const [currentMessage, setCurrentMessage] = useState<Message>();
     const [autoScrollEnabled, setAutoScrollEnabled] = useState<boolean>(true);
     const [showSettings, setShowSettings] = useState<boolean>(false);
-    const [showScrollDownButton, setShowScrollDownButton] =
-      useState<boolean>(false);
+    const [showScrollDownButton, setShowScrollDownButton] = useState<boolean>(false);
+    const [showApiKeyModal, setShowApiKeyModal] = useState<boolean>(false);
 
     const messagesEndRef = useRef<HTMLDivElement>(null);
     const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -152,30 +155,149 @@ export const Chat: FC<Props> = memo(
     return (
       <div className="relative flex-1 overflow-hidden bg-white dark:bg-[#343541]">
         {!(apiKey || serverSideApiKeyIsSet) ? (
-          <div className="mx-auto flex h-full w-[300px] flex-col justify-center space-y-6 sm:w-[600px]">
+          <div className="mx-auto flex h-full w-[300px] flex-col justify-center space-y-6 sm:w-[500px]">
             <div className="text-center text-4xl font-bold text-black dark:text-white">
-              Welcome to Chatbot UI
+              Welcome to Promptbook
             </div>
             <div className="text-center text-lg text-black dark:text-white">
-              <div className="mb-8">{`Chatbot UI is an open source clone of OpenAI's ChatGPT UI.`}</div>
-              <div className="mb-2 font-bold">
-                Important: Chatbot UI is 100% unaffiliated with OpenAI.
-              </div>
+              <div className="mb-8">{`your place to chat, but better...`}</div>
             </div>
+
+          <div className="flex flex-col items-center justify-center ml-auto">
             <div className="text-center text-gray-500 dark:text-gray-400">
-              <div className="mb-2">
-                Chatbot UI allows you to plug in your API key to use this UI
-                with their API.
+            <div className="text-center text-sm dark:text-white">
+              <div className="mx-auto grid grid-cols-2 gap-5 sm:w-[500px]">
+
+                <div className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Easy API login</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Prompt library</span>
+                </div>
+
+                <div className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Better UI</span>
+                </div>
+
+               
+                  <div className="flex items-center space-x-2">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-6 w-6 text-green-500"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                    <span>Multiple AI models</span>
+                    <span className="text-xs font-semibold text-gray-400">coming soon</span>
+                  </div>
+
+                
+
+                <div className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Folders, export</span>
+                </div>
+
+            
+                <div className="flex items-center space-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-6 w-6 text-green-500"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M5 13l4 4L19 7"
+                    />
+                  </svg>
+                  <span>Integrations</span>
+                  <span className="text-xs font-semibold text-gray-400">coming soon</span>
+                </div>
+ 
               </div>
-              <div className="mb-2">
-                It is <span className="italic">only</span> used to communicate
-                with their API.
+
+              <div className="container text-center p-10 mr-10">
+                <button
+                  className="w-full px-4 py-2 text-sm font-medium text-white bg-gray-500 rounded-md hover:bg-gray-600"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setShowApiKeyModal(true);
+                  }}
+                  >
+                  Enter OpenAI API key
+                </button>
               </div>
-              <div className="mb-2">
-                {t(
-                  'Please set your OpenAI API key in the bottom left of the sidebar.',
-                )}
-              </div>
+           
+            </div>
+
+
               <div>
                 {t(
                   "If you don't have an OpenAI API key, you can get one here: ",
@@ -190,6 +312,7 @@ export const Chat: FC<Props> = memo(
                 </a>
               </div>
             </div>
+          </div>
           </div>
         ) : modelError ? (
           <ErrorMessageDiv error={modelError} />
@@ -209,7 +332,7 @@ export const Chat: FC<Props> = memo(
                           <Spinner size="16px" className="mx-auto" />
                         </div>
                       ) : (
-                        'Chatbot UI'
+                        'Promptbook'
                       )}
                     </div>
 
@@ -314,6 +437,7 @@ export const Chat: FC<Props> = memo(
               }}
             />
           </>
+
         )}
         {showScrollDownButton && (
           <div className="absolute bottom-0 right-0 mb-4 mr-4 pb-20">
@@ -324,6 +448,14 @@ export const Chat: FC<Props> = memo(
               <IconArrowDown size={18} />
             </button>
           </div>
+        )}
+
+        {showApiKeyModal && (
+            <ApiKeyModal
+              apiKey = {apiKey}
+              onClose={() => setShowApiKeyModal(false)}
+              onUpdateApiKey={onUpdateApiKey}
+            />
         )}
       </div>
     );
